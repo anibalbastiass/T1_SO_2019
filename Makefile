@@ -18,16 +18,18 @@ TARGET_OUTPUT = Cartas
 LIBS = -lm
 CC = gcc
 CFLAGS = -g -Wall
+ODIR=obj
+HDIR=include
 
 .CLEARALL: default all clean
 
 default: $(TARGET)
 all: default
 
-OBJECTS = $(patsubst %.c, %.o, $(wildcard *.c))
-HEADERS = $(wildcard *.h)
+OBJECTS = $(patsubst %.c, $(ODIR)/%.o, $(wildcard *.c))
+HEADERS = $(wildcard $(HDIR)/*.h)
 
-%.o: %.c $(HEADERS)
+$(ODIR)/%.o: %.c $(HEADERS)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 .PRECIOUS: $(TARGET) $(OBJECTS)
@@ -36,6 +38,6 @@ $(TARGET): $(OBJECTS)
 	$(CC) $(OBJECTS) -Wall $(LIBS) -o $@
 
 clean:
-	-rm -f *.o
+	-rm -f $(ODIR)/*.o
 	-rm -f $(TARGET)
 	-rm -r $(TARGET_OUTPUT)

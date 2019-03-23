@@ -34,22 +34,33 @@ En caso de ser una llamada recursiva, sigue con el siguiente archivo del directo
 
 ## Navegacion de cartas
 
-Luego de haber creado las carpetas y archivos, se ejecuta un mini shell, donde se 
+Luego de haber creado las carpetas y archivos, se puede ejecutar un mini shell, donde se 
 puede ir al directorio de cartas y acceder a la informacion de cada uno.
 
 Se utilizan los comandos de navegacion en Unix cd (Cambio de directorio), cd .. 
 (Retroceder a directorio anterior) y ls (Listar contenido de directorio)
+
+### Modo de compilacion
+El compilador GCC de Unix genera archivos object (.o) y el ejecutable para usar
+la aplicacion. En el Makefile se definieron las siguientes reglas:
+
+- make clean (Limpia el ejecutable, .o y directorio de Cartas generadas)
+- make (Compila la aplicacion y genera objetos y ejecutable)
+
+Se recomienda ejecutar estos 2 scripts para modo de pruebas
 
 ### Modo de ejecucion
 - Al iniciar la aplicacion, se puede ejecutar de 2 formas:
 
 * Leer un archivo: (-f)
 * Leer muchos archivos de un directorio (-d)
+* Navegar el directorio de carpetas (-n)
 
 Ejemplos:
 
 ./Tarea1-2604215-1 -f carta-test1.txt
 ./Tarea1-2604215-1 -d cartas_test
+./Tarea1-2604215-1 -n Cartas
 
 ### Test de pruebas
 Dentro de esta tarea, se encuentra una carpeta llamada "cartas_test" con 10 archivos

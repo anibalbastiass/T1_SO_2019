@@ -24,10 +24,7 @@
 
 #include <ctype.h>
 
-#include "Tarea1-Main.h"
-
-// Inline functions
-#define ARRAY_LENGHT(x) (sizeof(x) / sizeof((x)[0]))
+#include "include/Tarea1-Main.h"
 
 // Constantes
 #define FOLDER_PERMISSIONS 07777
@@ -107,7 +104,7 @@ void createFolders()
 
   // Crea Carpeta raiz
   printf("Creación de Carpeta Raiz:\n\n");
-  printf("  Carpeta insertada: [%s]\n", root_folder);
+  printf("  Carpeta creada: [%s]\n", root_folder);
   mkdir(root_folder, FOLDER_PERMISSIONS);
 
   printf("\nCreación de Carpetas de Tipos:\n\n");
@@ -146,9 +143,9 @@ void createFolders()
 
         mkdir(dest_num, FOLDER_PERMISSIONS);
       }
-      printf("  Carpeta insertada: [%s]\n", dest_edic);
+      printf("  Carpeta creada: [%s]\n", dest_edic);
     }
-    printf("  Carpeta insertada de Numeros: 0 - 100\n\n");
+    printf("  Carpeta creada de Numeros: 0 - 100\n\n");
   }
 }
 
@@ -175,10 +172,10 @@ void moveCardFromDirectoryToPathFolder(char *path)
   createFileInCardPath();
 }
 
-void moveCardToPathFolder(char *argv[])
+void moveCardToPathFolder(char *argv)
 {
   FILE *ptr_file;
-  ptr_file = fopen(argv[1], "r");
+  ptr_file = fopen(argv, "r");
 
   if (!ptr_file)
   {
@@ -186,10 +183,10 @@ void moveCardToPathFolder(char *argv[])
     return;
   }
 
+  // Se inicializa nodo temporal para guardar muchas instancias
   Card card_temp;
 
   fscanf(ptr_file, "%[^\t\n]\n%[^\t\n]\n%[^\t\n]\n%[^\t\n]", card_temp.title, card_temp.type, card_temp.edition, card_temp.number);
-  printf("%s - %s - %s - %s", card_temp.title, card_temp.type, card_temp.edition, card_temp.number);
   card = card_temp;
 
   fclose(ptr_file);
@@ -231,8 +228,6 @@ void createFileInCardPath()
   strcpy(dest_file, dest_path_file);
   strcat(dest_file, src_file);
 
-  printf("Carta Insertada: [%s]\n\n", dest_file);
-
   FILE *fp;
   mkdir(dest_num, 0777);
   fp = fopen(dest_file, "w+");
@@ -249,20 +244,22 @@ void createFileInCardPath()
     fprintf(fp, "%s", concatenateString(card.type, "\n"));
     fprintf(fp, "%s", concatenateString(card.edition, "\n"));
     fprintf(fp, "%s", concatenateString(card.number, "\n"));
+
+    printf("Carta Insertada: [%s]\n\n", dest_file);
   }
 
   // Se cierra puntero para escribir en archivo
   fclose(fp);
 }
 
-void mapDirectory()
+void mapDirectory(char *directory)
 {
   DIR *dir;
 
   //Información sobre el archivo
   struct dirent *ent;
 
-  dir = opendir("cartas_test");
+  dir = opendir(directory);
 
   if (dir == NULL)
     error("No es posible abrir el directorio");
@@ -277,7 +274,7 @@ void mapDirectory()
       //processFile(ent->d_name);
 
       // Procesamiento de cada carta test de forma recursiva
-      moveCardFromDirectoryToPathFolder(concatenateString("cartas_test/", ent->d_name));
+      moveCardFromDirectoryToPathFolder(concatenateString(concatenateString(directory, "/"), ent->d_name));
     }
   }
   closedir(dir);
@@ -293,13 +290,13 @@ void error(const char *s)
 void processFile(char *file)
 {
   FILE *pFile;
-  long fSize;
+  long fSize = 0;
 
   pFile = fopen(file, "r");
   
   if (pFile)
   {
-    fseek(fSize, 0L, SEEK_END);
+    fseek(pFile, 0L, SEEK_END);
     fSize = ftell(pFile);
     fclose(pFile);
     printf("%30s\n", file);

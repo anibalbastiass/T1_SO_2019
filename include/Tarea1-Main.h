@@ -13,12 +13,14 @@
  */
 
 void clearScreen(void);
+void showLaunchError(void);
+
 char *getNumberPath(int);
 char *concatenateString(char*, char*);
 void createFolders(void);
 
 void createFileInCardPath(void);
-void moveCardToPathFolder(char *argv[]);
+void moveCardToPathFolder(char *argv);
 
 char *splitAndGetFirst(char *, char *);
 void mapDirectory();
@@ -31,3 +33,6 @@ void procesoArchivo(char *archivo);
 
 void error(const char *);
 void processFile(char *);
+
+// Navigation
+void initNavigation(void);
