@@ -16,7 +16,6 @@
 #include <stdio.h>
 #include <string.h>
 #include "include/Tarea1-Main.h"
-#include "include/Tarea1-Nav.h"
 
 // Inline functions
 #define clearScreen() printf("\033[H\033[J")
@@ -28,6 +27,7 @@ int main(int argc, char *argv[])
   // Esta aplicación tiene 2 metodos de entrada
   // -f: Lectura de Archivo
   // -d: Lectura de Directorio, para recorrer archivos de forma recursiva
+  // -n: Navegar directorio
   //
   // Si no tiene argumentos, no se podra ejecutar la aplicacion
 
@@ -35,8 +35,8 @@ int main(int argc, char *argv[])
   switch (argc)
   {
   case 3:
-  { 
-    if (strcmp(argv[1], "-f") == 0)
+  {
+    if (strcmp(argv[1], "-f") == 0 && argv[2] != NULL && strcmp(argv[2], "") != 0)
     {
       // Luego Guarda los datos del archivo, hace match de tipos de cartas
       // Y crea las carpetas
@@ -47,19 +47,17 @@ int main(int argc, char *argv[])
 
       // Muestra mini shell para navegar en las carpetas de las cartas
     }
-    else if (strcmp(argv[1], "-d") == 0)
+    else if (strcmp(argv[1], "-d") == 0 && argv[2] != NULL && strcmp(argv[2], "") != 0)
     {
       createFolders();
-      
-      // Mueve las cartas de un directorio test de forma recursiva
-      mapDirectory(argv[2]);
-    }
-    else if (strcmp(argv[1], "-n") == 0)
-    {
-      // Primero checkeamos si hay contenido o si existe el directorio
 
-      // Luego iniciamos la navegacion
-      initNavigation();
+      // Mueve las cartas de un directorio test de forma recursiva
+      mapDirectories(argv[2]);
+    }
+    else if (strcmp(argv[1], "-n") == 0 && argv[2] != NULL && strcmp(argv[2], "") != 0)
+    {
+      // Iniciamos la navegacion
+      initNavigation(argv[2]);
     }
     else
     {
@@ -82,8 +80,10 @@ void showLaunchError()
 
   printf("* Leer un archivo: (-f)\n");
   printf("* Leer muchos archivos de un directorio (-d)\n\n");
+  printf("* Navegar en un directorio (-n)\n\n");
 
   printf("Ejemplos:\n\n");
   printf("./Tarea1-2604215-1 -f carta-test1.txt\n");
-  printf("./Tarea1-2604215-1 -d cartas_test\n\n");
+  printf("./Tarea1-2604215-1 -d cartas_test\n");
+  printf("./Tarea1-2604215-1 -n Cartas\n\n");
 }

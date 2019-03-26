@@ -12,27 +12,36 @@
  *  una especie de interfaz
  */
 
+// Booleanos
+#define FALSE 0
+#define TRUE 1
+
 void clearScreen(void);
 void showLaunchError(void);
 
 char *getNumberPath(int);
-char *concatenateString(char*, char*);
+char *concatenateString(char *, char *);
 void createFolders(void);
 
 void createFileInCardPath(void);
 void moveCardToPathFolder(char *argv);
 
 char *splitAndGetFirst(char *, char *);
-void mapDirectory();
+void mapDirectories(char *);
 
-/* Función para devolver un error en caso de que ocurra */
 void error(const char *s);
 
-/* Función que hace algo con un archivo */
-void procesoArchivo(char *archivo);
-
-void error(const char *);
-void processFile(char *);
-
 // Navigation
-void initNavigation(void);
+void initNavigation(char *);
+void readFilesDirectory(char *);
+void printWelcomeMessage(void);
+void printPrompt(void);
+
+int readCommand(char *, char *);
+
+void listDir(char *);
+int endsWith(const char *, const char *);
+char *concatenateStringNav(char *, char *);
+void readFile(char *);
+
+int convertStringToNumber(char *);

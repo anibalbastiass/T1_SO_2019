@@ -35,7 +35,7 @@
 
 // Variables globales
 char root_folder[STRING_LENGTH] = "Cartas";
-char type_arr[CARD_TYPE_LENGTH][STRING_LENGTH] = {"/Normal", "/Magica", "/Rara"};
+char type_arr[CARD_TYPE_LENGTH][STRING_LENGTH] = {"/Normal", "/Magico", "/Raro"};
 char edition_arr[CARD_EDIT_LENGTH][STRING_LENGTH] = {"/Skrull", "/Kree",
                                                      "/Shi Ar", "/Titan", "/Zen La"};
 
@@ -252,7 +252,7 @@ void createFileInCardPath()
   fclose(fp);
 }
 
-void mapDirectory(char *directory)
+void mapDirectories(char *directory)
 {
   DIR *dir;
 
@@ -270,11 +270,14 @@ void mapDirectory(char *directory)
     // Directorio actual (.) y el anterior (..), tal como la llamada Unix "ls"
     if ((strcmp(ent->d_name, ".") != 0) && (strcmp(ent->d_name, "..") != 0))
     {
-      // Una vez tenemos el archivo, lo pasamos a una función para procesarlo
-      //processFile(ent->d_name);
-
       // Procesamiento de cada carta test de forma recursiva
-      moveCardFromDirectoryToPathFolder(concatenateString(concatenateString(directory, "/"), ent->d_name));
+      // Concatenacion de paths variables
+      char src[STRING_LENGTH], dest[STRING_LENGTH];
+      strcpy(src, ent->d_name);
+      strcpy(dest, concatenateString(directory, "/"));
+      strcat(dest, src);
+      
+      moveCardFromDirectoryToPathFolder(dest);
     }
   }
   closedir(dir);
@@ -285,24 +288,4 @@ void error(const char *s)
 {
   perror(s);
   exit(EXIT_FAILURE);
-}
-
-void processFile(char *file)
-{
-  FILE *pFile;
-  long fSize = 0;
-
-  pFile = fopen(file, "r");
-  
-  if (pFile)
-  {
-    fseek(pFile, 0L, SEEK_END);
-    fSize = ftell(pFile);
-    fclose(pFile);
-    printf("%30s\n", file);
-  }
-  else
-  {
-    printf("%30s\n", file);
-  }
 }

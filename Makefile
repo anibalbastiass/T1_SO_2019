@@ -8,9 +8,9 @@
 # 
 #  Archivo: Makefile
 #  
-#  Esta archivo implementa las funciones de Tarea1-Func.c para hacer todas las
-#  acciones necesarias que requieren esta tarea en un metodo Main, para la ejecucion
-#  de la aplicacion
+#  Este archivo construye la aplicacion leyendo las carpetas src, src/include
+#  encontrando archivos .c y .h para luego generar objetos en la carpeta obj/
+#  y el ejecutabl en la ruta principal con el compilador GCC
 # 
 
 TARGET = Tarea1-2604215-1
@@ -20,16 +20,17 @@ CC = gcc
 CFLAGS = -g -Wall
 ODIR=obj
 HDIR=include
+SDIR=src
 
 .CLEARALL: default all clean
 
 default: $(TARGET)
 all: default
 
-OBJECTS = $(patsubst %.c, $(ODIR)/%.o, $(wildcard *.c))
-HEADERS = $(wildcard $(HDIR)/*.h)
+OBJECTS = $(patsubst $(SDIR)/%.c, $(ODIR)/%.o, $(wildcard $(SDIR)/*.c))
+HEADERS = $(wildcard $(SDIR)/$(HDIR)/*.h)
 
-$(ODIR)/%.o: %.c $(HEADERS)
+$(ODIR)/%.o: $(SDIR)/%.c $(HEADERS)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 .PRECIOUS: $(TARGET) $(OBJECTS)
